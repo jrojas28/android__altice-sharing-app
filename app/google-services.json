@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "854664257801",
+    "firebase_url": "https://altice-avanzado-final.firebaseio.com",
+    "project_id": "altice-avanzado-final",
+    "storage_bucket": "altice-avanzado-final.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:854664257801:android:acad65b9df8b7d07",
+        "android_client_info": {
+          "package_name": "altice.jrojas.android__sharing_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "854664257801-hgk22rogpk627cnohdkot6o4k7sfvrs7.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "854664257801-hgk22rogpk627cnohdkot6o4k7sfvrs7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBAJogKUC5PBlggbvSeTAd3SHuAWPsOwI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

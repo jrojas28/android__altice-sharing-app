@@ -1,0 +1,33 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="altice.jrojas.android__sharing_app.activities.ArticleFeedFragment">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/article_feed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"/>
+
+    <LinearLayout
+        android:id="@+id/article_feed_error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+        <TextView
+            android:id="@+id/article_feed_error_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Ha ocurrido un error al intentar obtener las ultimas noticias."/>
+        <Button
+            android:id="@+id/article_feed_error_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reintentar"/>
+    </LinearLayout>
+
+</RelativeLayout>

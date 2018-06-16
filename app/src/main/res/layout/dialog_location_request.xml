@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Dado que no ha permitido obtener su localizacion automaticamente, es necesario que la inserte de forma manual."
+        android:layout_marginBottom="8dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pais"/>
+    <EditText
+        android:id="@+id/article_country"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ciudad"/>
+    <EditText
+        android:id="@+id/article_city"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>
