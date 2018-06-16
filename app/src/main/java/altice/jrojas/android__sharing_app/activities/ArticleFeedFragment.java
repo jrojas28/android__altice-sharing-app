@@ -79,7 +79,6 @@ public class ArticleFeedFragment extends Fragment {
                 }
                 else {
                     articleAdapter.updateData(queryDocumentSnapshots.toObjects(Article.class));
-                    Toast.makeText(getActivity(), "Hay nuevos articulos sin leer.", Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -1,91 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardElevation="1dp"
-    app:cardCornerRadius="8dp"
-    android:layout_margin="8dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
-    <RelativeLayout
+    android:clipToPadding="false"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <TextView
+        android:id="@+id/article_document_id"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/article_document_id"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"/>
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+    <TextView
+        android:id="@+id/article_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Title"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/article_title">
         <ImageView
             android:id="@+id/article_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:contentDescription="Article Image"/>
+            android:contentDescription="Article Image"
+            android:layout_marginBottom="8dp"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_below="@id/article_image"
-            android:padding="16dp">
-            <TextView
-                android:id="@+id/article_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Title"
-                android:textStyle="bold"
-                android:textSize="20dp"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/article_author"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:layout_weight="1"
-                    android:text="Anonimo"/>
-                <TextView
-                    android:id="@+id/article_location_address"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:gravity="end"
-                    android:layout_weight="1"
-                    android:text="Ubicacion Desconocida"/>
-            </LinearLayout>
-            <TextView
-                android:id="@+id/article_location_latlong"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:text="0,0"
-                android:textSize="8dp"/>
+            android:orientation="vertical">
             <TextView
                 android:id="@+id/article_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Description" />
+            <ImageView style="@style/Separator"
+                android:background="@color/colorGrey"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <com.mikhaellopez.circularimageview.CircularImageView
+                    android:id="@+id/article_author_picture"
+                    android:layout_height="60dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:src="@mipmap/ic_launcher_round"/>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:gravity="end"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/article_author"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textSize="12sp"
+                        android:text="Anonimo"/>
+                    <TextView
+                        android:id="@+id/article_location_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:gravity="end"
+                        android:textSize="12sp"
+                        android:text="Ubicacion Desconocida"/>
+                    <TextView
+                        android:id="@+id/article_location_latlong"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:text="0,0"
+                        android:textSize="8sp"/>
+                    <TextView
+                        android:id="@+id/article_created_at"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:gravity="end"
+                        android:textSize="12sp"
+                        android:text="Fecha Desconocida"/>
+                </LinearLayout>
+            </LinearLayout>
             <LinearLayout
                 android:id="@+id/article_button_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <ImageView style="@style/Separator" />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
                     android:gravity="end"
-                    android:layout_marginRight="-8dp">
+                    android:layout_marginRight="-8dp"
+                    android:clipToPadding="false">
                     <android.support.design.widget.FloatingActionButton
                         android:id="@+id/article_share_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:fabSize="mini"
                         app:srcCompat="@drawable/ic_share_white_16dp"
+                        android:elevation="0dp"
                         android:layout_gravity="bottom|end"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </RelativeLayout>
-</android.support.v7.widget.CardView>
+    </LinearLayout>
+    <ImageView style="@style/Separator"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="8dp"/>
+</RelativeLayout>

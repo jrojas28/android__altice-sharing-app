@@ -14,12 +14,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -78,11 +81,19 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
         holder.getArticleAuthor().setText("Por " + article.getAuthor());
         holder.getArticleTitle().setText(article.getTitle());
         holder.getArticleDescription().setText(article.getDescription());
+        holder.getArticleCreatedAt().setText(article.getCreatedAt().toString());
         if(article.getLocation() != null) {
             holder.getArticleLocationAddress().setText(article.getLocation().getAddress());
             holder.getArticleLocationLatLong().setText(article.getLocation().getLatLong());
         }
         if(article.getUser() != null) {
+            User user = article.getUser();
+            if(user.getProfilePictureUrl() != null && user.getProfilePictureUrl() != "") {
+                Glide.with(holder.itemView)
+                        .load(user.getProfilePictureUrl())
+                        .apply(RequestOptions.centerCropTransform())
+                        .into(holder.getArticleAuthorPicture());
+            }
             holder.getArticleAuthor().setText("Por " + article.getUser().getUsername());
         }
         holder.getArticleShareButton().setOnClickListener(new View.OnClickListener() {
@@ -120,8 +131,10 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
         private TextView articleTitle;
         private TextView articleDescription;
         private TextView articleAuthor;
+        private ImageView articleAuthorPicture;
         private TextView articleLocationAddress;
         private TextView articleLocationLatLong;
+        private TextView articleCreatedAt;
         private FloatingActionButton articleShareButton;
         public ArticleViewHolder(View itemView) {
             super(itemView);
@@ -130,8 +143,10 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
             articleTitle = itemView.findViewById(R.id.article_title);
             articleDescription = itemView.findViewById(R.id.article_description);
             articleAuthor = itemView.findViewById(R.id.article_author);
+            articleAuthorPicture = itemView.findViewById(R.id.article_author_picture);
             articleLocationAddress = itemView.findViewById(R.id.article_location_address);
             articleLocationLatLong = itemView.findViewById(R.id.article_location_latlong);
+            articleCreatedAt = itemView.findViewById(R.id.article_created_at);
             articleShareButton = itemView.findViewById(R.id.article_share_button);
         }
 
@@ -155,12 +170,20 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
             return articleAuthor;
         }
 
+        public ImageView getArticleAuthorPicture() {
+            return articleAuthorPicture;
+        }
+
         public TextView getArticleLocationAddress() {
             return articleLocationAddress;
         }
 
         public TextView getArticleLocationLatLong() {
             return articleLocationLatLong;
+        }
+
+        public TextView getArticleCreatedAt() {
+            return articleCreatedAt;
         }
 
         public FloatingActionButton getArticleShareButton() {

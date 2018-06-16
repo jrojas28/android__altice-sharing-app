@@ -78,6 +78,7 @@ public class NewArticleFragment extends Fragment {
     private EditText articleDescription;
     private Button uploadArticleImageBtn;
     private Button createArticleBtn;
+    private Button signInBtn;
     private OnFragmentInteractionListener mListener;
     private ImagePicker articleImagePicker;
     private Uri articleImageUri;
@@ -105,6 +106,7 @@ public class NewArticleFragment extends Fragment {
                 new OnImagePickedListener() {
                     @Override
                     public void onImagePicked(Uri imageUri) {
+                        Log.wtf(TAG, "Received image from ImagePicker");
                         Glide.with(getActivity()).load(imageUri).into(articleImage);
                         articleImageUri = imageUri;
                     }
@@ -124,6 +126,7 @@ public class NewArticleFragment extends Fragment {
         uploadArticleImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ((MainActivity) getActivity()).setRelatedFragmentClass(NewArticleFragment.class);
                 articleImagePicker.choosePicture(true);
             }
         });
@@ -145,6 +148,14 @@ public class NewArticleFragment extends Fragment {
                     Log.wtf(TAG, "Something's null");
                     Toast.makeText(getActivity(), "Todos los campos deben ser rellenados.", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+        signInBtn = newArticleView.findViewById(R.id.sign_in_error_button);
+        signInBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Send to the Login Page.
+                ((MainActivity) getActivity()).goToPage(2);
             }
         });
         Log.wtf(TAG, "Returning View..");

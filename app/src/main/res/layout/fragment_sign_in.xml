@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center"
-        android:visibility="gone">
+        android:visibility="visible">
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -49,12 +49,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="@drawable/detail_rounded_button"
+                    android:textColor="@color/colorWhite"
                     android:text="Crear Cuenta"/>
                 <Button
                     android:id="@+id/log_in_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="@drawable/detail_rounded_button"
+                    android:textColor="@color/colorWhite"
                     android:text="Iniciar Sesion"/>
             </LinearLayout>
         </LinearLayout>
@@ -145,12 +149,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Iniciar Sesion"
+                    android:background="@drawable/detail_rounded_button"
+                    android:textColor="@color/colorWhite"
                     android:layout_weight="1"/>
                 <Button
                     android:id="@+id/sign_up_create_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Crear Cuenta"
+                    android:background="@drawable/detail_rounded_button"
+                    android:textColor="@color/colorWhite"
                     android:layout_weight="1"/>
             </LinearLayout>
         </LinearLayout>
@@ -158,14 +166,14 @@
     <LinearLayout
         android:id="@+id/sign_in_profile_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center"
         android:visibility="visible">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:orientation="vertical"
             android:gravity="center">
             <FrameLayout
@@ -189,25 +197,27 @@
                 android:id="@+id/profile_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="12dp"
+                android:textSize="12sp"
                 android:textStyle="bold"
                 android:gravity="center"
                 android:text="Username"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 android:gravity="center"
                 android:text="Tus Articulos Publicados"/>
-            <ImageView style="@style/Separator"/>
+            <ImageView style="@style/Separator"
+                android:layout_marginBottom="0dp"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_weight="3">
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:fillViewport="true">
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/profile_article_feed"
                     android:layout_width="match_parent"

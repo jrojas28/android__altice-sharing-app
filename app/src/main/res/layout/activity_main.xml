@@ -4,10 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
     android:orientation="vertical"
     tools:context="altice.jrojas.android__sharing_app.MainActivity">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/main_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:title="@string/app_name"
+        app:titleTextColor="@color/colorWhite"
+        android:elevation="4dp">
+
+    </android.support.v7.widget.Toolbar>
     <android.support.design.widget.TabLayout
         android:id="@+id/main_tabs"
         android:layout_width="match_parent"
@@ -18,10 +26,13 @@
         app:tabGravity="fill"
         app:tabTextColor="#FFF"
         app:tabSelectedTextColor="@color/colorAccent"
+        android:elevation="4dp"
         />
     <android.support.v4.view.ViewPager
         android:id="@+id/main_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
     </android.support.v4.view.ViewPager>
 </LinearLayout>

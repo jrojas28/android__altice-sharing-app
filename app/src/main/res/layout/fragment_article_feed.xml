@@ -27,7 +27,9 @@
             android:id="@+id/article_feed_error_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Reintentar"/>
+            android:text="Reintentar"
+            android:background="@drawable/detail_rounded_button"
+            android:textColor="@color/colorWhite"/>
     </LinearLayout>
 
 </RelativeLayout>

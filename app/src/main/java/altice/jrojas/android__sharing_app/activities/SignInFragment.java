@@ -10,6 +10,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -39,7 +40,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.IOException;
@@ -54,6 +58,7 @@ import altice.jrojas.android__sharing_app.classes.Article;
 import altice.jrojas.android__sharing_app.classes.ArticleAdapter;
 
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.WriteBatch;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -137,6 +142,7 @@ public class SignInFragment extends Fragment {
                 new OnImagePickedListener() {
                     @Override
                     public void onImagePicked(Uri imageUri) {
+                        Log.wtf(TAG, "Received image from ImagePicker");
                         final MaterialDialog uploadProgress = new MaterialDialog.Builder(getActivity())
                                 .title("Subiendo imagen...")
                                 .content("Porfavor espere mientras se sube la imagen")
@@ -169,7 +175,7 @@ public class SignInFragment extends Fragment {
                             @Override
                             public void onComplete(@NonNull Task<Uri> task) {
                                 if(task.isSuccessful()) {
-                                    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                                    final FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                                     final Uri profilePictureUri = task.getResult();
                                     firebaseFirestore.collection("users")
                                             .document(firebaseUser.getUid())
@@ -183,6 +189,27 @@ public class SignInFragment extends Fragment {
                                                                 .load(profilePictureUri)
                                                                 .apply(RequestOptions.centerCropTransform())
                                                                 .into(profilePicture);
+                                                        //Now, obtain the articles to update the images.
+                                                        final WriteBatch updateBatch = firebaseFirestore.batch();
+                                                        firebaseFirestore.collection("articles")
+                                                                .whereEqualTo("user.id", firebaseUser.getUid())
+                                                                .get()
+                                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                        if(task.isSuccessful()) {
+                                                                            QuerySnapshot snap = task.getResult();
+                                                                            List<DocumentSnapshot> documents = snap.getDocuments();
+                                                                            for(DocumentSnapshot document : documents) {
+                                                                                updateBatch.update(
+                                                                                        document.getReference(),
+                                                                                        "user.profilePictureUrl",
+                                                                                        profilePictureUri.toString());
+                                                                            }
+                                                                            updateBatch.commit();
+                                                                        }
+                                                                    }
+                                                                });
                                                     }
                                                 }
                                             });
@@ -468,6 +495,7 @@ public class SignInFragment extends Fragment {
         profilePictureChangeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ((MainActivity) getActivity()).setRelatedFragmentClass(SignInFragment.class);
                 profilePicturePicker.choosePicture(true);
             }
         });
@@ -494,20 +522,22 @@ public class SignInFragment extends Fragment {
                             Glide.with(getView()).load(url).into(profilePicture);
                         }
                         firebaseFirestore.collection("articles")
-                                .whereEqualTo("user.id", user.getId())
-                                .get()
-                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        if(task.isSuccessful()) {
-                                            QuerySnapshot articlesQuery = task.getResult();
-                                            profileArticleAdapter.updateData(articlesQuery.toObjects(Article.class));
-                                        }
-                                        else {
-                                            errorToast.show();
-                                        }
-                                    }
-                                });
+                                .whereEqualTo("user.id", firebaseAuth.getCurrentUser().getUid())
+                                .orderBy("createdAt", Query.Direction.DESCENDING)
+                                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                            @Override
+                            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                                if(e != null) {
+                                    //Something went wrong..
+                                    Log.wtf(TAG, e.getMessage());
+                                    Toast.makeText(getActivity(), "Error actualizando articulos.", Toast.LENGTH_SHORT).show();
+                                }
+                                else {
+                                    Log.wtf(TAG, "Received New Data From Articles!");
+                                    profileArticleAdapter.updateData(queryDocumentSnapshots.toObjects(Article.class));
+                                }
+                            }
+                        });
                     }
                 }
                 else {

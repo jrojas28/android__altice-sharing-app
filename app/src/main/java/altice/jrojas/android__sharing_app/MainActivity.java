@@ -28,10 +28,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.internal.safeparcel.SafeParcelable;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -70,6 +74,7 @@ public class MainActivity extends AppCompatActivity
     private ViewPager mainViewPager;
     private TabAdapter mainViewPagerAdapter;
     //Activity Variables
+    private Toolbar mainToolbar;
     private Location currentUserLocation;
     private LocationManager locationManager;
     private LocationListener locationListener;
@@ -77,11 +82,18 @@ public class MainActivity extends AppCompatActivity
     private Looper locationLooper;
     private User loggedUser;
     private FirebaseAuth firebaseAuth;
+    private Class relatedFragmentClass;
+    //Menu References
+    private MenuItem signInItem;
+    private MenuItem signOutItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mainToolbar = findViewById(R.id.main_toolbar);
+        this.setSupportActionBar(mainToolbar);
+        firebaseAuth = FirebaseAuth.getInstance();
         database = FirebaseFirestore.getInstance();
         databaseSettings = new FirebaseFirestoreSettings.Builder()
                 .setTimestampsInSnapshotsEnabled(true)
@@ -99,16 +111,49 @@ public class MainActivity extends AppCompatActivity
                 locationManager.requestSingleUpdate(locationCriteria, locationListener, locationLooper);
             }
         }
-        firebaseAuth = FirebaseAuth.getInstance();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        signInItem = menu.findItem(R.id.menu_sign_in_button);
+        signOutItem = menu.findItem(R.id.menu_sign_out_button);
+        if(user != null) {
+            signInItem.setVisible(false);
+            signOutItem.setVisible(true);
+        }
+        else {
+            signInItem.setVisible(true);
+            signOutItem.setVisible(false);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        switch(id) {
+            case R.id.menu_sign_in_button:
+                goToPage(2);
+                break;
+            case R.id.menu_sign_out_button:
+                firebaseAuth.signOut();
+                updateUI();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-        if (firebaseUser != null) {
-            Log.wtf(TAG, "Logged In as " + firebaseUser.getEmail());
-        }
     }
 
     @Override
@@ -117,7 +162,9 @@ public class MainActivity extends AppCompatActivity
         List<Fragment> fragments = getSupportFragmentManager().getFragments();
         if (fragments != null) {
             for (Fragment f : fragments) {
-                f.onActivityResult(requestCode, resultCode, data);
+                if(relatedFragmentClass != null && relatedFragmentClass.isInstance(f)) {
+                    f.onActivityResult(requestCode, resultCode, data);
+                }
             }
         }
     }
@@ -254,11 +301,28 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void updateUI() {
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if(user != null) {
+            if(signInItem != null && signOutItem != null) {
+                signInItem.setVisible(false);
+                signOutItem.setVisible(true);
+            }
+        }
+        else {
+            if(signInItem != null && signOutItem != null) {
+                signInItem.setVisible(true);
+                signOutItem.setVisible(false);
+            }
+        }
         initializeFragments(0);
     }
 
     public void updateUI(int page) {
         initializeFragments(page);
+    }
+
+    public void goToPage(int page) {
+        mainViewPager.setCurrentItem(page);
     }
 
     public Location getCurrentLocation() {
@@ -308,5 +372,9 @@ public class MainActivity extends AppCompatActivity
         else {
             Toast.makeText(getApplicationContext(), "No ha sido posible compartir el articulo", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void setRelatedFragmentClass(Class fragmentClass) {
+        relatedFragmentClass = fragmentClass;
     }
 }
