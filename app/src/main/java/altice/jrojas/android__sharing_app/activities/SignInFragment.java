@@ -110,6 +110,7 @@ public class SignInFragment extends Fragment {
     private TextView profileUsername;
     private RecyclerView profileArticleFeed;
     private ArticleAdapter profileArticleAdapter;
+    private TextView profileArticleEmpty;
     private Toast errorToast;
 
     public SignInFragment() {
@@ -503,6 +504,7 @@ public class SignInFragment extends Fragment {
         profileArticleFeed = signInView.findViewById(R.id.profile_article_feed);
         profileArticleFeed.setAdapter(profileArticleAdapter);
         profileArticleFeed.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        profileArticleEmpty = signInView.findViewById(R.id.profile_article_empty_text);
     }
 
     public void updateProfile(FirebaseUser user) {
@@ -534,7 +536,14 @@ public class SignInFragment extends Fragment {
                                 }
                                 else {
                                     Log.wtf(TAG, "Received New Data From Articles!");
-                                    profileArticleAdapter.updateData(queryDocumentSnapshots.toObjects(Article.class));
+                                    List<Article> articles = queryDocumentSnapshots.toObjects(Article.class);
+                                    profileArticleAdapter.updateData(articles);
+                                    if(articles.size() == 0) {
+                                        profileArticleEmpty.setVisibility(View.VISIBLE);
+                                    }
+                                    else {
+                                        profileArticleEmpty.setVisibility(View.GONE);
+                                    }
                                 }
                             }
                         });

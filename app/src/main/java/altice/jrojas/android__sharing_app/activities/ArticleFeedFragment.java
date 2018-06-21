@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,6 +27,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import altice.jrojas.android__sharing_app.R;
 import altice.jrojas.android__sharing_app.classes.Article;
@@ -47,6 +49,7 @@ public class ArticleFeedFragment extends Fragment {
     //Class Variables
     private RecyclerView articleFeed;
     private ArticleAdapter articleAdapter;
+    private TextView articleFeedEmpty;
     private LinearLayout errorContainer;
     private Button retryButton;
 
@@ -78,7 +81,14 @@ public class ArticleFeedFragment extends Fragment {
                     Toast.makeText(getActivity(), "Error actualizando articulos.", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    articleAdapter.updateData(queryDocumentSnapshots.toObjects(Article.class));
+                    List<Article> articles = queryDocumentSnapshots.toObjects(Article.class);
+                    articleAdapter.updateData(articles);
+                    if(articles.size() == 0) {
+                        articleFeedEmpty.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        articleFeedEmpty.setVisibility(View.GONE);
+                    }
                 }
             }
         });
@@ -93,6 +103,7 @@ public class ArticleFeedFragment extends Fragment {
         articleFeed = articleFeedView.findViewById(R.id.article_feed);
         articleFeed.setAdapter(articleAdapter);
         articleFeed.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        articleFeedEmpty = articleFeedView.findViewById(R.id.article_feed_empty_text);
         errorContainer = articleFeedView.findViewById(R.id.article_feed_error);
         retryButton = articleFeedView.findViewById(R.id.article_feed_error_btn);
         retryButton.setOnClickListener(new View.OnClickListener() {

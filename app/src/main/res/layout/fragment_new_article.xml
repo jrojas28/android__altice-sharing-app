@@ -44,6 +44,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Agregar Imagen"
+                    android:padding="8dp"
+                    android:layout_margin="8dp"
                     android:background="@drawable/detail_rounded_button"
                     android:textColor="@color/colorWhite"/>
                 <Button
@@ -52,6 +54,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Crear Articulo"
+                    android:padding="8dp"
+                    android:layout_margin="8dp"
                     android:background="@drawable/detail_rounded_button"
                     android:textColor="@color/colorWhite"/>
             </LinearLayout>
@@ -76,6 +80,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Iniciar Sesion"
+            android:padding="8dp"
             android:background="@drawable/detail_rounded_button"
             android:textColor="@color/colorWhite"/>
     </LinearLayout>

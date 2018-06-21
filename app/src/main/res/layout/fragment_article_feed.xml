@@ -9,6 +9,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="visible"/>
+    <TextView
+        android:id="@+id/article_feed_empty_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:text="No se encontraron articulos para mostrar."
+        />
 
     <LinearLayout
         android:id="@+id/article_feed_error"
@@ -28,6 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Reintentar"
+            android:padding="8dp"
             android:background="@drawable/detail_rounded_button"
             android:textColor="@color/colorWhite"/>
     </LinearLayout>
